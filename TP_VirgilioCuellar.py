@@ -2,6 +2,7 @@ import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx
+import requests 
 #------------------------------------------------creo modelo----------------------------------------#
 pesos = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,16, 17, 18, 19, 20,
                   21, 22, 23, 24, 25, 26, 27, 28, 29, 30], dtype=float)
@@ -62,14 +63,14 @@ class capa:
 class grafico:
     def graficar(self):
         fig, ax = plt.subplots(figsize=(4,4))
-        oculta1=capa(oculta1)
-        oculta2=capa(oculta2)
-        salida=capa(salida)
+        oculta=capa(oculta1)
+        oculta3=capa(oculta2)
+        salida1=capa(salida)
         G = nx.Graph()
         G.add_node("Entrada",pos=(0,1)) #agrego nodo de entrada
-        self.entradaXCapa(G,oculta1,10)
-        self.capaXCapa(G,oculta2,oculta1,20)
-        self.capaXCapa(G,salida,oculta2,30)
+        self.entradaXCapa(G,oculta,10)
+        self.capaXCapa(G,oculta3,oculta,20)
+        self.capaXCapa(G,salida1,oculta3,30)
         pos = nx.get_node_attributes(G, 'pos')
         nx.draw_networkx_nodes(G,pos,  node_color="lawngreen", node_size=2000, ax=ax) # nodos
         nx.draw_networkx_labels(G,pos,  font_size=10, font_family='sans-serif') # etiquetas de los nodos
@@ -80,6 +81,8 @@ class grafico:
 
         plt.axis('off')
         plt.show()
+
+
     def entradaXCapa(self,grafo,capa,posicion):
         for i in range(len(capa.sesgo())):
             grafo.add_node(capa.sesgo()[i],pos=(i+posicion,i))
@@ -94,3 +97,15 @@ class grafico:
                 for l in range(len(capa.peso()[j])):
                     peso=capa.peso()[j][i]
                     grafo.add_edge(entrada.sesgo()[j],capa.sesgo()[i],weight=peso) 
+flag=True
+while flag:
+    eleccion=int(input("1-entrenar 2-graficar 3-mostrar 4-salir"))
+    if eleccion==1:
+        entrenar()
+    elif eleccion==2:
+        Nuevografico=grafico()
+        Nuevografico.graficar()
+    elif eleccion==3:
+        pesosSesgos()
+    else:
+        flag=False
