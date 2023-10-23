@@ -1,0 +1,3 @@
+Grupo Federico Virgilio-Lautaro Cuellar
+Lider Federico Virgilio
+Tema:Grafo de red neuronal entrenada.
