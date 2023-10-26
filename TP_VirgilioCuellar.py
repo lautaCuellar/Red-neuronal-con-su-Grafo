@@ -2,15 +2,35 @@ import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx
-import requests 
-#------------------------------------------------creo modelo----------------------------------------#
+import re
+import requests
+
+# Descargar el contenido de la página web
+url = 'https://mercados.ambito.com//dolar/informal/variacion'
+respuesta = requests.get(url)
+html = respuesta.text
+
+# Definir una expresión regular para extraer el valor de compra del dólar
+patron = r"\d(.*?)\W+\d(.*?)\d"
+coincidencias = re.search(patron, html)
+print (coincidencias.group())
+
+dolar_string = coincidencias.group()
+
+salida1 = "{:s}".format(dolar_string)
+salida2 = salida1.replace(',','n')
+salida3 = salida2.replace('.',',')
+salida4 = salida3.replace('n','.')
+dolar = float(salida4)
+
 pesos = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,16, 17, 18, 19, 20,
                   21, 22, 23, 24, 25, 26, 27, 28, 29, 30], dtype=float)
-  #100, 120, 150, 200, 250, 300,350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000], dtype=float)
-dolar = np.array([885, 1770, 2655, 3540, 4425, 5310, 6195, 7080, 7965, 8550, 9735, 10620,
-                  11505, 12390, 13275, 14160, 15045, 15930, 16815, 17700, 18585, 19470,
-                  20355, 21240, 22125, 23010, 23895, 24780, 25665, 26550], dtype=float)
-#85500, 106200, 132750, 177000, 221250, 265500, 309750, 354000, 398250, 442500, 486750, 531000, 575250, 619500, 663750, 708000, 752250, 796500, 840750, 855000], dtype=float)
+
+dolares = np.array([dolar, dolar*2, dolar*3, dolar*4, dolar*5, dolar*6, dolar*7, dolar*8, dolar*9, dolar*10,
+                    dolar*11, dolar*12, dolar*13, dolar*14, dolar*15, dolar*16, dolar*17, dolar*18, dolar*19,
+                    dolar*20, dolar*21, dolar*22, dolar*23, dolar*24, dolar*25, dolar*26, dolar*27, dolar*28,
+                    dolar*29, dolar*30], dtype=float) 
+
 
 oculta1 = tf.keras.layers.Dense(units=3, input_shape=[1])
 oculta2 = tf.keras.layers.Dense(units=3)
